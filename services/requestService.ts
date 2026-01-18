@@ -1,6 +1,6 @@
 class RequestService {
     private static instance: RequestService;
-    private url: string = 'http://localhost:8081';
+    private url: string = process.env.BASE_URL;
 
     public static getInstance(): RequestService {
         if (!RequestService.instance) {
