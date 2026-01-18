@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { GoogleGenAI } from "@google/genai";
 
-const GeminiGuru: React.FC = () => {
+const GeminiAI: React.FC = () => {
   const [prompt, setPrompt] = useState('');
   const [response, setResponse] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -24,7 +24,7 @@ const GeminiGuru: React.FC = () => {
       setResponse(res.text || 'Sorry, I couldn\'t generate a recommendation right now.');
     } catch (error) {
       console.error("AI Error:", error);
-      setResponse("Our library guru is currently busy. Please try again later.");
+      setResponse("Our PowerBooks AI is currently busy. Please try again later.");
     } finally {
       setIsLoading(false);
     }
@@ -34,10 +34,10 @@ const GeminiGuru: React.FC = () => {
     <section className="bg-amber-900 py-20 px-4">
       <div className="max-w-4xl mx-auto text-center">
         <h2 className="text-3xl sm:text-4xl font-serif font-bold text-white mb-6">
-          Meet Your <span className="text-amber-400">Personal AI Guru</span>
+          Meet Your <span className="text-amber-400">PowerBooks AI</span>
         </h2>
         <p className="text-amber-100 mb-10 text-lg">
-          Not sure what to read next? Tell our AI-powered librarian about your favorite genres, books, or moods, and get curated recommendations instantly.
+          Not sure what to read next? Tell our PowerBooks AI about your favorite genres, books, or moods, and get curated recommendations instantly.
         </p>
 
         <div className="relative max-w-2xl mx-auto mb-10">
@@ -76,7 +76,7 @@ const GeminiGuru: React.FC = () => {
                 <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3z" />
                 <path d="M7.667 10.844l1.85.793a3.001 3.001 0 002.966 0l1.85-.793.001 5.48a1 1 0 01-.553.894l-4 2a1 1 0 01-.894 0l-4-2a1 1 0 01-.553-.894l.001-5.48z" />
               </svg>
-              <h4 className="font-bold text-lg uppercase tracking-wider">The Guru Suggests:</h4>
+              <h4 className="font-bold text-lg tracking-wider">Recommendation:</h4>
             </div>
             <div className="text-amber-50 leading-relaxed whitespace-pre-wrap font-serif text-lg italic">
               {response}
@@ -88,4 +88,4 @@ const GeminiGuru: React.FC = () => {
   );
 };
 
-export default GeminiGuru;
+export default GeminiAI;

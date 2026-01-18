@@ -42,7 +42,7 @@ const Cart: React.FC<CartProps> = ({ items, onUpdateQuantity, onRemove, onContin
         <div className="flex-1 space-y-8">
           {items.map((item) => (
             <div key={item.book.id} className="flex gap-6 pb-8 border-b border-gray-100 last:border-0">
-              <div className="w-24 h-36 flex-shrink-0 rounded-lg overflow-hidden shadow-md">
+              <div className="w-24 h-36 shrink-0 rounded-lg overflow-hidden shadow-md">
                 <img src={item.book.coverImage} alt={item.book.title} className="w-full h-full object-cover" />
               </div>
               <div className="flex-1 flex flex-col justify-between">

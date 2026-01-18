@@ -20,7 +20,7 @@ const Hero: React.FC<HeroProps> = ({ onExplore }) => {
                 <span className="block text-amber-600 xl:inline">endless stories.</span>
               </h1>
               <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
-                Discover your next favorite book from our collection of hand-picked masterpieces. From timeless classics to the latest bestsellers, Lumina brings stories to your doorstep.
+                Discover your next favorite book from our collection of hand-picked masterpieces. From timeless classics to the latest bestsellers, Power brings stories to your doorstep.
               </p>
               <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start gap-4">
                 <button
@@ -45,7 +45,7 @@ const Hero: React.FC<HeroProps> = ({ onExplore }) => {
           src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
           alt="Bookshelf library"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-amber-50 via-transparent to-transparent lg:block hidden"></div>
+        <div className="absolute inset-0 bg-linear-to-r from-amber-50 via-transparent to-transparent lg:block hidden"></div>
       </div>
     </div>
   );

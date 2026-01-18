@@ -12,7 +12,7 @@ const BookCard: React.FC<BookCardProps> = ({ book, onClick, onAddToCart }) => {
   return (
     <div className="group bg-white rounded-xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300 flex flex-col h-full">
       <div 
-        className="relative aspect-[2/3] overflow-hidden cursor-pointer"
+        className="relative aspect-2/3 overflow-hidden cursor-pointer"
         onClick={() => onClick(book)}
       >
         <img 
@@ -37,7 +37,7 @@ const BookCard: React.FC<BookCardProps> = ({ book, onClick, onAddToCart }) => {
           </button>
         </div>
       </div>
-      <div className="p-4 flex flex-col flex-grow">
+      <div className="p-4 flex flex-col grow">
         <div className="flex justify-between items-start mb-1">
           <span className="text-xs font-semibold text-amber-600 uppercase tracking-widest">{book.category}</span>
           <div className="flex items-center text-amber-500">
