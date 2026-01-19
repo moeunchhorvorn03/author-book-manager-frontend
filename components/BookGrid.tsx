@@ -8,21 +8,7 @@ interface BookGridProps {
     onAddToCart: (book: Book) => void;
 }
 
-const BookGrid: React.FC<BookGridProps> = ({ onBookClick, onAddToCart }) => {
-    const [books, setBooks] = useState<Book[]>([]);
-
-    useEffect(() => {
-        request
-            .get('books')
-            .then(data => {
-                setBooks(data);
-                
-            })
-            .catch(error => {
-                console.error('Error fetching books:', error);
-            });
-    }, []);
-
+const BookGrid: React.FC<BookGridProps> = ({ onBookClick, onAddToCart, books }) => {
     if (books.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center py-20 text-center">

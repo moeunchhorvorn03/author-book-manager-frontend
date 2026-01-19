@@ -1,5 +1,5 @@
 import { View, Book, Category, CartItem } from '@/types';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import BookDetails from './BookDetails';
 import BookGrid from './BookGrid';
 import Cart from './Cart';
@@ -7,12 +7,42 @@ import Footer from './Footer';
 import GeminiAI from './GeminiAI';
 import Hero from './Hero';
 import Navbar from './Navbar';
+import { request } from '@/services/requestService';
 
 const Layout: React.FC = () => {
     const [currentView, setCurrentView] = useState<View>('home');
     const [selectedBook, setSelectedBook] = useState<Book | null>(null);
     const [activeCategory, setActiveCategory] = useState<Category | 'All'>('All');
     const [cart, setCart] = useState<CartItem[]>([]);
+    const [books, setBooks] = useState<Book[]>([]);
+
+    useEffect(() => {
+        getBooks();
+    }, [activeCategory]);
+
+    const getBooks = () => {
+        const body = {
+            category: activeCategory,
+            id: "",
+            title: "",
+            authorId: 0,
+            publishedYear: "",
+            author: "",
+            price: 0,
+            rating: 0,
+            coverImage: "",
+            description: "",
+            is_best_seller: true
+        };
+        request
+            .get('books', body)
+            .then(data => {
+                setBooks(data);
+            })
+            .catch(error => {
+                console.error('Error fetching books:', error);
+            });
+    };
 
     const handleBookClick = (book: Book) => {
         setSelectedBook(book);
@@ -59,7 +89,7 @@ const Layout: React.FC = () => {
                                     {['All', ...Object.values(Category)].map(cat => (
                                         <button
                                             key={cat}
-                                            onClick={() => setActiveCategory(cat as Category | 'All')}
+                                            onClick={() => setActiveCategory(cat)}
                                             className={`px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap ${activeCategory === cat
                                                     ? 'bg-amber-600 text-white shadow-md'
                                                     : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
@@ -71,6 +101,7 @@ const Layout: React.FC = () => {
                                 </div>
                             </div>
                             <BookGrid
+                                books={books}
                                 onBookClick={handleBookClick}
                                 onAddToCart={addToCart}
                             />
@@ -86,14 +117,19 @@ const Layout: React.FC = () => {
                             <p className="text-gray-600 max-w-2xl mx-auto">Browse our carefully curated selection of timeless classics and modern masterpieces.</p>
                         </div>
                         <div className="flex flex-col md:flex-row md:items-start gap-8">
-                            <aside className="w-full md:w-64 flex-shrink-0 space-y-8">
+                            <aside className="w-full md:w-64 shrink-0 space-y-8">
                                 <div>
                                     <h3 className="text-lg font-bold text-gray-900 mb-4">Categories</h3>
                                     <div className="space-y-2">
                                         {['All', ...Object.values(Category)].map(cat => (
                                             <button
                                                 key={cat}
-                                                onClick={() => setActiveCategory(cat as Category | 'All')}
+                                                onClick={
+                                                    () => {
+                                                        setActiveCategory(cat as Category | 'All');
+                                                        
+                                                    }
+                                                }
                                                 className={`w-full text-left px-3 py-2 rounded-md transition-colors ${activeCategory === cat ? 'bg-amber-50 text-amber-700 font-semibold' : 'text-gray-600 hover:bg-gray-50'
                                                     }`}
                                             >
@@ -107,6 +143,7 @@ const Layout: React.FC = () => {
                                 <BookGrid
                                     onBookClick={handleBookClick}
                                     onAddToCart={addToCart}
+                                    books={books}
                                 />
                             </div>
                         </div>
@@ -141,7 +178,7 @@ const Layout: React.FC = () => {
                 setView={setCurrentView}
                 cartCount={cart.reduce((sum, item) => sum + item.quantity, 0)}
             />
-            <main className="flex-grow pt-16">
+            <main className="grow pt-16">
                 {renderView()}
             </main>
             <Footer />
