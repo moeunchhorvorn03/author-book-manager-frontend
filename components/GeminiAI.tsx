@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { GoogleGenAI } from "@google/genai";
 import ReactMarkdown from "react-markdown";
+import { googleGenAI } from "@/services/googleGenAIService";
 
 const GeminiAI: React.FC = () => {
     const [prompt, setPrompt] = useState("");
@@ -12,29 +13,21 @@ const GeminiAI: React.FC = () => {
 
         setIsLoading(true);
         setResponse(null);
-        try {
-            const ai = new GoogleGenAI({
-                apiKey: "AIzaSyCtNFVPyMXmXzqVYAJfXegCmzH-bnho5Pw",
-            });
-            const res = await ai.models.generateContent({
-                model: "gemini-3-flash-preview",
-                contents: `I like these books/genres: ${prompt}. Suggest 3 unique book recommendations and tell me why I'd like them. Be concise and literary.`,
-                config: {
-                    systemInstruction:
-                        "You are a professional librarian with deep knowledge of literature. Your tone is elegant and helpful.",
-                },
-            });
-            setResponse(
-                res.text || "Sorry, I couldn't generate a recommendation right now.",
-            );
-        } catch (error) {
+
+        googleGenAI.generateContent({
+            contents: `I like these books/genres: ${prompt}. Suggest 3 unique book recommendations and tell me why I'd like them. Be concise and literary.`,
+            config: {
+                systemInstruction:
+                    "You are a professional librarian with deep knowledge of literature. Your tone is elegant and helpful.",
+            },
+        }).then((res) => {
+            setResponse(res.text || "Sorry, I couldn't generate a recommendation right now.");
+        }).catch((error) => {
             console.error("AI Error:", error);
-            setResponse(
-                "Our PowerBooks AI is currently busy. Please try again later.",
-            );
-        } finally {
+            setResponse("Our PowerBooks AI is currently busy. Please try again later.");
+        }).finally(() => {
             setIsLoading(false);
-        }
+        });
     };
 
     return (

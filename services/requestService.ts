@@ -1,6 +1,6 @@
 class RequestService {
     private static instance: RequestService;
-    private url: string = (import.meta as any).env.VITE_API_URL;
+    private url: string = process.env.VITE_API_URL;
 
     public static getInstance(): RequestService {
         if (!RequestService.instance) {
