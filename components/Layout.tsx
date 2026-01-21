@@ -89,7 +89,7 @@ const Layout: React.FC = () => {
                                     {['All', ...Object.values(Category)].map(cat => (
                                         <button
                                             key={cat}
-                                            onClick={() => setActiveCategory(cat)}
+                                            onClick={() => setActiveCategory(cat as Category | 'All')}
                                             className={`px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap ${activeCategory === cat
                                                     ? 'bg-amber-600 text-white shadow-md'
                                                     : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
@@ -177,6 +177,7 @@ const Layout: React.FC = () => {
                 currentView={currentView}
                 setView={setCurrentView}
                 cartCount={cart.reduce((sum, item) => sum + item.quantity, 0)}
+                onSearch={() => {}}
             />
             <main className="grow pt-16">
                 {renderView()}

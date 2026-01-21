@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import BookCard from './BookCard';
 import { Book, Category } from '../types';
-import { request } from '@/services/requestService';
 
 interface BookGridProps {
     onBookClick: (book: Book) => void;
     onAddToCart: (book: Book) => void;
+    books: Book[];
 }
 
 const BookGrid: React.FC<BookGridProps> = ({ onBookClick, onAddToCart, books }) => {
