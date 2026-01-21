@@ -6,7 +6,7 @@ import { Route, Routes } from 'react-router-dom';
 const App: React.FC = () => {
     return (
         <Routes>
-            <Route path="/" element={<SplashScreen onExplore={() => {}} />} />
+            <Route path="/" element={<SplashScreen />} />
             <Route path="/home" element={<Layout />} />
         </Routes>
     );

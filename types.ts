@@ -17,7 +17,8 @@ export interface Book {
   description: string;
   category: Category;
   coverImage: string;
-  isBestseller?: boolean;
+  isBestseller: boolean;
+  review: number;
 }
 
 export interface CartItem {

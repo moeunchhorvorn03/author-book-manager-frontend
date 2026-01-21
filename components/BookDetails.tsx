@@ -24,7 +24,7 @@ const BookDetails: React.FC<BookDetailsProps> = ({ book, onBack, onAddToCart }) 
       <div className="flex flex-col lg:flex-row gap-12">
         <div className="lg:w-1/3">
           <div className="sticky top-24">
-            <div className="relative aspect-[2/3] rounded-2xl overflow-hidden shadow-2xl">
+            <div className="relative aspect-2/3 rounded-2xl overflow-hidden shadow-2xl">
               <img src={book.coverImage} alt={book.title} className="w-full h-full object-cover" />
               {book.isBestseller && (
                 <div className="absolute top-4 left-4 bg-amber-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
@@ -52,7 +52,7 @@ const BookDetails: React.FC<BookDetailsProps> = ({ book, onBack, onAddToCart }) 
               <span className="ml-2 text-gray-900 font-bold">{book.rating}</span>
             </div>
             <span className="text-gray-400">|</span>
-            <span className="text-gray-500 text-sm">1,240 Reviews</span>
+            <span className="text-gray-500 text-sm">{book.review.toLocaleString()} Review{book.review > 0 && "s"}</span>
           </div>
 
           <div className="prose prose-amber max-w-none mb-10">
