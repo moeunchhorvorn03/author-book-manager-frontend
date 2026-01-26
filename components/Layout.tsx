@@ -102,6 +102,8 @@ const Layout: React.FC = () => {
     };
 
     const handleOpen = () => {
+        console.log(isStillWarm);
+        
         if (isStillWarm) return;
 
         setTimeout(() => {
