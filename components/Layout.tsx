@@ -8,9 +8,12 @@ import GeminiAI from './GeminiAI';
 import Hero from './Hero';
 import Navbar from './Navbar';
 import { request } from '@/services/requestService';
+import { useLocation } from 'react-router-dom';
 
 
 const Layout: React.FC = () => {
+    const location = useLocation();
+    const { isStillWarm } = location.state;
     const [currentView, setCurrentView] = useState<View>('home');
     const [selectedBook, setSelectedBook] = useState<Book | null>(null);
     const [activeCategory, setActiveCategory] = useState<Category | 'All'>('All');
@@ -20,9 +23,7 @@ const Layout: React.FC = () => {
     const [isOpen, setOpen] = useState(false);
 
     useEffect(() => {
-        setTimeout(() => {
-            setOpen(true);
-        }, 600);
+        handleOpen();
     }, []);
 
     useEffect(() => {
@@ -32,20 +33,10 @@ const Layout: React.FC = () => {
     const getBooks = () => {
         const body = {
             category: activeCategory,
-            id: "",
-            title: "",
-            authorId: 0,
-            publishedYear: "",
-            author: "",
-            price: 0,
-            rating: 0,
-            coverImage: "",
-            description: "",
-            is_best_seller: true,
-            review: 0
         };
+
         request
-            .get('books', body)
+            .get('books/filter', body)
             .then(data => {
                 setBooks(data);
             })
@@ -87,6 +78,11 @@ const Layout: React.FC = () => {
     };
 
     const handleJoinCommunity = () => {
+        if (isStillWarm) {
+            setShowPopup(false);
+            return;
+        };
+
         setOpen(false);
         setTimeout(() => {
             setShowPopup(false);
@@ -94,11 +90,24 @@ const Layout: React.FC = () => {
     };
 
     const handleClosePopup = () => {
+        if (isStillWarm) {
+            setShowPopup(false);
+            return;
+        };
+
         setOpen(false);
         setTimeout(() => {
             setShowPopup(false);
         }, 600);
     };
+
+    const handleOpen = () => {
+        if (isStillWarm) return;
+
+        setTimeout(() => {
+            setOpen(true);
+        }, 600);
+    }
 
     const renderView = () => {
         switch (currentView) {

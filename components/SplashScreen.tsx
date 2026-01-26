@@ -1,10 +1,14 @@
+import { WARM_TTL } from '@/constants';
 import { request } from '@/services/requestService';
+import { storage } from '@/services/storageService';
 import React, { useState, useEffect } from 'react';
 import { replace, useNavigate } from 'react-router-dom';
 
 const SplashScreen: React.FC = () => {
-    const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(true);
+    const warmedAt = storage.getLocalItem("warmed_at");
+    const isStillWarm = warmedAt && Date.now() - Number(warmedAt) < WARM_TTL;
 
     useEffect(() => {
         getBooks();
@@ -12,27 +16,23 @@ const SplashScreen: React.FC = () => {
 
     const getBooks = () => {
         const body = {
-            category: "All",
-            id: "",
-            title: "",
-            authorId: 0,
-            publishedYear: "",
-            author: "",
-            price: 0,
-            rating: 0,
-            coverImage: "",
-            description: "",
-            is_best_seller: true,
-            review: 0
+            category: "All"
         };
-        request.get('books', body)
+
+        if (isStillWarm) {
+            navigate("/home", { replace: true, state: { isStillWarm } });
+            return;
+        }
+
+        request.get('books/filter', body)
             .then(() => {
-                navigate("/home", { replace: true });
+                navigate("/home", { replace: true, state: { isStillWarm } });
             }).catch((error) => {
                 console.error('Error fetching health:', error);
             })
             .finally(() => {
                 setIsLoading(false);
+                storage.setLocalItem("warmed_at", Date.now().toString());
             });
     };
 
