@@ -20,13 +20,13 @@ const SplashScreen: React.FC = () => {
         };
 
         if (isStillWarm) {
-            navigate("/home", { replace: true, state: { isStillWarm } });
+            navigate("/home", { replace: true });
             return;
         }
 
         request.get('books/filter', body)
             .then(() => {
-                navigate("/home", { replace: true, state: { isStillWarm } });
+                navigate("/home", { replace: true });
             }).catch((error) => {
                 console.error('Error fetching health:', error);
             })

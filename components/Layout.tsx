@@ -9,11 +9,11 @@ import Hero from './Hero';
 import Navbar from './Navbar';
 import { request } from '@/services/requestService';
 import { useLocation } from 'react-router-dom';
+import { storage } from '@/services/storageService';
+import { WARM_TTL } from '@/constants';
 
 
 const Layout: React.FC = () => {
-    const location = useLocation();
-    const { isStillWarm } = location.state;
     const [currentView, setCurrentView] = useState<View>('home');
     const [selectedBook, setSelectedBook] = useState<Book | null>(null);
     const [activeCategory, setActiveCategory] = useState<Category | 'All'>('All');
@@ -21,6 +21,9 @@ const Layout: React.FC = () => {
     const [books, setBooks] = useState<Book[]>([]);
     const [showPopup, setShowPopup] = useState(true);
     const [isOpen, setOpen] = useState(false);
+
+    const warmedAt = storage.getLocalItem("warmed_at");
+    const isStillWarm = warmedAt && Date.now() - Number(warmedAt) < WARM_TTL;
 
     useEffect(() => {
         handleOpen();
@@ -102,8 +105,6 @@ const Layout: React.FC = () => {
     };
 
     const handleOpen = () => {
-        console.log(isStillWarm);
-        
         if (isStillWarm) return;
 
         setTimeout(() => {
