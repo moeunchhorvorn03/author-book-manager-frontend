@@ -8,7 +8,6 @@ import GeminiAI from './GeminiAI';
 import Hero from './Hero';
 import Navbar from './Navbar';
 import { request } from '@/services/requestService';
-import { useLocation } from 'react-router-dom';
 import { storage } from '@/services/storageService';
 import { WARM_TTL } from '@/constants';
 
@@ -105,7 +104,9 @@ const Layout: React.FC = () => {
     };
 
     const handleOpen = () => {
-        if (isStillWarm) return;
+        if (isStillWarm) {
+            setShowPopup(false);
+        };
 
         setTimeout(() => {
             setOpen(true);
