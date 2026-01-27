@@ -6,7 +6,7 @@ interface NavbarProps {
   currentView: View;
   setView: (view: View) => void;
   cartCount: number;
-  onSearch: (query: string) => void;
+  onSearch: (searchValue: string) => void;
 }
 
 const Navbar: React.FC<NavbarProps> = ({ currentView, setView, cartCount, onSearch }) => {
@@ -34,7 +34,12 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setView, cartCount, onSear
               <input 
                 type="text" 
                 placeholder="Search titles, authors..." 
-                onChange={(e) => onSearch(e.target.value)}
+                onKeyUp={(e) => {
+                  const target = e.target as HTMLInputElement;
+                  if (e.key === "Enter") {
+                    onSearch(target.value);
+                  }
+                }}
                 className="w-full bg-gray-50 border border-gray-200 rounded-full py-2 px-10 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all"
               />
               <svg className="w-4 h-4 text-gray-400 absolute left-4 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -80,7 +85,10 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setView, cartCount, onSear
           <input 
             type="text" 
             placeholder="Search books..." 
-            onChange={(e) => onSearch(e.target.value)}
+            onKeyUp={(e) => {
+              const target = e.target as HTMLInputElement;
+              if (e.key === "Enter") onSearch(target.value);
+            }}
             className="w-full bg-gray-50 border border-gray-200 rounded-lg py-2 px-4 text-sm"
           />
           <div className="flex flex-col gap-3">

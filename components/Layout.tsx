@@ -8,7 +8,6 @@ import GeminiAI from './GeminiAI';
 import Hero from './Hero';
 import Navbar from './Navbar';
 import { request } from '@/services/requestService';
-import { useLocation } from 'react-router-dom';
 import { storage } from '@/services/storageService';
 
 
@@ -16,6 +15,7 @@ const Layout: React.FC = () => {
     const [currentView, setCurrentView] = useState<View>('home');
     const [selectedBook, setSelectedBook] = useState<Book | null>(null);
     const [activeCategory, setActiveCategory] = useState<Category | 'All'>('All');
+    const [searchValue, setSearchValue] = useState<String>("");
     const [cart, setCart] = useState<CartItem[]>([]);
     const [books, setBooks] = useState<Book[]>([]);
     const [showPopup, setShowPopup] = useState(true);
@@ -27,12 +27,13 @@ const Layout: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        getBooks();
+        getBooks(activeCategory, searchValue);
     }, [activeCategory]);
 
-    const getBooks = () => {
+    const getBooks = (category, searchValue) => {
         const body = {
-            category: activeCategory,
+            category: category,
+            searchValue: searchValue
         };
 
         request
@@ -195,6 +196,11 @@ const Layout: React.FC = () => {
         }
     };
 
+    const onSearch = (searchValue: string) => {
+        setSearchValue(searchValue);
+        getBooks(activeCategory, searchValue);
+    };
+
     return (
         <>
             <div className="min-h-screen flex flex-col">
@@ -202,7 +208,7 @@ const Layout: React.FC = () => {
                     currentView={currentView}
                     setView={setCurrentView}
                     cartCount={cart.reduce((sum, item) => sum + item.quantity, 0)}
-                    onSearch={() => { }}
+                    onSearch={onSearch}
                 />
                 <main className="grow pt-16">
                     {renderView()}
