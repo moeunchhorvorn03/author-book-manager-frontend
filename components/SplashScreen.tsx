@@ -8,7 +8,7 @@ const SplashScreen: React.FC = () => {
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
     const warmedAt = storage.getLocalItem("warmed_at");
-    const isStillWarm = warmedAt && Date.now() - Number(warmedAt) < WARM_TTL;
+    const isStillWarm = !!warmedAt && Date.now() - Number(warmedAt) < WARM_TTL;
 
     useEffect(() => {
         getBooks();
@@ -21,12 +21,14 @@ const SplashScreen: React.FC = () => {
 
         if (isStillWarm) {
             navigate("/home", { replace: true });
+            storage.setLocalItem("isPromotion", "N");
             return;
         }
 
         request.get('books/filter', body)
             .then(() => {
                 navigate("/home", { replace: true });
+                storage.setLocalItem("isPromotion", "Y");
             }).catch((error) => {
                 console.error('Error fetching health:', error);
             })

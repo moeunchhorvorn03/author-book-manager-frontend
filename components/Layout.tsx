@@ -8,8 +8,8 @@ import GeminiAI from './GeminiAI';
 import Hero from './Hero';
 import Navbar from './Navbar';
 import { request } from '@/services/requestService';
+import { useLocation } from 'react-router-dom';
 import { storage } from '@/services/storageService';
-import { WARM_TTL } from '@/constants';
 
 
 const Layout: React.FC = () => {
@@ -20,9 +20,7 @@ const Layout: React.FC = () => {
     const [books, setBooks] = useState<Book[]>([]);
     const [showPopup, setShowPopup] = useState(true);
     const [isOpen, setOpen] = useState(false);
-
-    const warmedAt = storage.getLocalItem("warmed_at");
-    const isStillWarm = warmedAt && Date.now() - Number(warmedAt) < WARM_TTL;
+    const isPromotion = storage.getLocalItem("isPromotion") === "Y";
 
     useEffect(() => {
         handleOpen();
@@ -80,32 +78,21 @@ const Layout: React.FC = () => {
     };
 
     const handleJoinCommunity = () => {
-        if (isStillWarm) {
-            setShowPopup(false);
-            return;
-        };
-
-        setOpen(false);
-        setTimeout(() => {
-            setShowPopup(false);
-        }, 600);
+        handleClosePopup();
     };
 
     const handleClosePopup = () => {
-        if (isStillWarm) {
-            setShowPopup(false);
-            return;
-        };
-
         setOpen(false);
+        storage.setLocalItem("isPromotion", "N");
         setTimeout(() => {
             setShowPopup(false);
         }, 600);
     };
 
     const handleOpen = () => {
-        if (isStillWarm) {
+        if (!isPromotion) {
             setShowPopup(false);
+            return;
         };
 
         setTimeout(() => {
