@@ -1,4 +1,4 @@
-import { View, Book, Category, CartItem } from '@/types';
+import { View, Category, CartItem } from '@/types';
 import React, { useState, useEffect } from 'react';
 import BookDetails from './BookDetails';
 import BookGrid from './BookGrid';
@@ -9,12 +9,12 @@ import Hero from './Hero';
 import Navbar from './Navbar';
 import { request } from '@/services/requestService';
 import { storage } from '@/services/storageService';
-
+import { Book, BookRequestBody } from '@/models/Book.type';
 
 const Layout: React.FC = () => {
     const [currentView, setCurrentView] = useState<View>('home');
     const [selectedBook, setSelectedBook] = useState<Book | null>(null);
-    const [activeCategory, setActiveCategory] = useState<Category | 'All'>('All');
+    const [activeCategory, setActiveCategory] = useState<Category>(Category.ALL);
     const [searchValue, setSearchValue] = useState<String>("");
     const [cart, setCart] = useState<CartItem[]>([]);
     const [books, setBooks] = useState<Book[]>([]);
@@ -30,15 +30,15 @@ const Layout: React.FC = () => {
         getBooks(activeCategory, searchValue);
     }, [activeCategory]);
 
-    const getBooks = (category, searchValue) => {
-        const body = {
+    const getBooks = (category: Category, searchValue) => {
+        const body: BookRequestBody = {
             category: category,
             searchValue: searchValue
         };
 
         request
             .get('books/filter', body)
-            .then(data => {
+            .then((data: Book[]) => {
                 setBooks(data);
             })
             .catch(error => {
@@ -111,16 +111,16 @@ const Layout: React.FC = () => {
                             <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
                                 <h2 className="text-3xl font-serif font-bold text-gray-900">Featured Collection</h2>
                                 <div className="flex overflow-x-auto pb-2 md:pb-0 gap-2 no-scrollbar">
-                                    {['All', ...Object.values(Category)].map(cat => (
+                                    {['All', ...Object.values(Category)].map((category: Category) => (
                                         <button
-                                            key={cat}
-                                            onClick={() => setActiveCategory(cat as Category | 'All')}
-                                            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap ${activeCategory === cat
+                                            key={category}
+                                            onClick={() => setActiveCategory(category)}
+                                            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap ${activeCategory === category
                                                 ? 'bg-amber-600 text-white shadow-md'
                                                 : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
                                                 }`}
                                         >
-                                            {cat}
+                                            {category}
                                         </button>
                                     ))}
                                 </div>
@@ -146,19 +146,19 @@ const Layout: React.FC = () => {
                                 <div>
                                     <h3 className="text-lg font-bold text-gray-900 mb-4">Categories</h3>
                                     <div className="space-y-2">
-                                        {['All', ...Object.values(Category)].map(cat => (
+                                        {['All', ...Object.values(Category)].map((category: Category) => (
                                             <button
-                                                key={cat}
+                                                key={category}
                                                 onClick={
                                                     () => {
-                                                        setActiveCategory(cat as Category | 'All');
+                                                        setActiveCategory(category);
 
                                                     }
                                                 }
-                                                className={`w-full text-left px-3 py-2 rounded-md transition-colors ${activeCategory === cat ? 'bg-amber-50 text-amber-700 font-semibold' : 'text-gray-600 hover:bg-gray-50'
+                                                className={`w-full text-left px-3 py-2 rounded-md transition-colors ${activeCategory === category ? 'bg-amber-50 text-amber-700 font-semibold' : 'text-gray-600 hover:bg-gray-50'
                                                     }`}
                                             >
-                                                {cat}
+                                                {category}
                                             </button>
                                         ))}
                                     </div>

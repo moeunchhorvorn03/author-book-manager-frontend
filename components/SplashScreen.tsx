@@ -1,6 +1,8 @@
 import { WARM_TTL } from '@/constants';
+import { BookRequestBody } from '@/models/Book.type';
 import { request } from '@/services/requestService';
 import { storage } from '@/services/storageService';
+import { Category } from '@/types';
 import React, { useState, useEffect } from 'react';
 import { replace, useNavigate } from 'react-router-dom';
 
@@ -15,8 +17,9 @@ const SplashScreen: React.FC = () => {
     }, []);
 
     const getBooks = () => {
-        const body = {
-            category: "All"
+        const body: BookRequestBody = {
+            category: Category.ALL,
+            searchValue: ""
         };
 
         if (isStillWarm) {
