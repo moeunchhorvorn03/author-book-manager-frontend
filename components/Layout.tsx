@@ -14,7 +14,7 @@ import { Book, BookRequestBody } from '@/models/Book.type';
 const Layout: React.FC = () => {
     const [currentView, setCurrentView] = useState<View>('home');
     const [selectedBook, setSelectedBook] = useState<Book | null>(null);
-    const [activeCategory, setActiveCategory] = useState<Category>(Category.ALL);
+    const [activeCategory, setActiveCategory] = useState<Category | "All">("All");
     const [searchValue, setSearchValue] = useState<String>("");
     const [cart, setCart] = useState<CartItem[]>([]);
     const [books, setBooks] = useState<Book[]>([]);
@@ -30,7 +30,7 @@ const Layout: React.FC = () => {
         getBooks(activeCategory, searchValue);
     }, [activeCategory]);
 
-    const getBooks = (category: Category, searchValue) => {
+    const getBooks = (category: Category | "All", searchValue) => {
         const body: BookRequestBody = {
             category: category,
             searchValue: searchValue

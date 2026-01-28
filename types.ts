@@ -1,7 +1,6 @@
 import { Book } from "./models/Book.type";
 
 export enum Category {
-  ALL = 'All',
   FICTION = 'Fiction',
   NON_FICTION = 'Non-Fiction',
   SCI_FI = 'Sci-Fi',

@@ -1,7 +1,7 @@
 import { Category } from "@/types";
 
 export interface BookRequestBody {
-    category: Category,
+    category: Category | "All",
     searchValue: string;
 }
 

@@ -18,7 +18,7 @@ const SplashScreen: React.FC = () => {
 
     const getBooks = () => {
         const body: BookRequestBody = {
-            category: Category.ALL,
+            category: "All",
             searchValue: ""
         };
 
