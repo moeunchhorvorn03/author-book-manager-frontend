@@ -9,13 +9,13 @@ class RequestService {
         return RequestService.instance;
     }
 
-    public get(endpoint: string, body: any = {}): Promise<any> {
+    public get(endpoint: string, body: any = {}, options?: { method?: string }): Promise<any> {
         return fetch(`${this.url}/${endpoint}`, {
-            method: 'POST',
+            method: options?.method || 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(body)
+            body: options?.method === 'GET' ? undefined : JSON.stringify(body)
         })
         .then(response => {
             if (!response.ok) {

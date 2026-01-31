@@ -13,5 +13,3 @@ export interface CartItem {
   book: Book;
   quantity: number;
 }
-
-export type View = 'home' | 'shop' | 'details' | 'cart';

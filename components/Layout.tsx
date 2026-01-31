@@ -1,6 +1,5 @@
-import { View, Category, CartItem } from '@/types';
+import { Category, CartItem } from '@/types';
 import React, { useState, useEffect } from 'react';
-import BookDetails from './BookDetails';
 import BookGrid from './BookGrid';
 import Cart from './Cart';
 import Footer from './Footer';
@@ -10,25 +9,35 @@ import Navbar from './Navbar';
 import { request } from '@/services/requestService';
 import { storage } from '@/services/storageService';
 import { Book, BookRequestBody } from '@/models/Book.type';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useAppSelector, useAppDispatch } from '@/store/hook';
+import { setCurrentView } from '@/store/slices/viewSlice';
 
 const Layout: React.FC = () => {
-    const [currentView, setCurrentView] = useState<View>('home');
-    const [selectedBook, setSelectedBook] = useState<Book | null>(null);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const { searchValue: searchValueFromLocation } = location.state || {};
     const [activeCategory, setActiveCategory] = useState<Category | "All">("All");
-    const [searchValue, setSearchValue] = useState<String>("");
+    const [searchValue, setSearchValue] = useState<string>("");
     const [cart, setCart] = useState<CartItem[]>([]);
     const [books, setBooks] = useState<Book[]>([]);
     const [showPopup, setShowPopup] = useState(true);
     const [isOpen, setOpen] = useState(false);
     const isPromotion = storage.getLocalItem("isPromotion") === "Y";
+    const currentView = useAppSelector(state => state.view.currentView)
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
         handleOpen();
+        if (searchValueFromLocation) {
+            setSearchValue(searchValueFromLocation);
+            navigate(location.pathname, { replace: true, state: {} });
+        }
     }, []);
 
     useEffect(() => {
         getBooks(activeCategory, searchValue);
-    }, [activeCategory]);
+    }, [activeCategory, searchValue]);
 
     const getBooks = (category: Category | "All", searchValue) => {
         const body: BookRequestBody = {
@@ -47,8 +56,7 @@ const Layout: React.FC = () => {
     };
 
     const handleBookClick = (book: Book) => {
-        setSelectedBook(book);
-        setCurrentView('details');
+        navigate(`/book/${book.id}`);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
@@ -106,7 +114,7 @@ const Layout: React.FC = () => {
             case 'home':
                 return (
                     <>
-                        <Hero onExplore={() => setCurrentView('shop')} />
+                        <Hero onExplore={() => dispatch(setCurrentView('shop'))} />
                         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
                             <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
                                 <h2 className="text-3xl font-serif font-bold text-gray-900">Featured Collection</h2>
@@ -174,21 +182,13 @@ const Layout: React.FC = () => {
                         </div>
                     </div>
                 );
-            case 'details':
-                return selectedBook ? (
-                    <BookDetails
-                        book={selectedBook}
-                        onBack={() => setCurrentView('home')}
-                        onAddToCart={addToCart}
-                    />
-                ) : null;
             case 'cart':
                 return (
                     <Cart
                         items={cart}
                         onUpdateQuantity={updateQuantity}
                         onRemove={removeFromCart}
-                        onContinueShopping={() => setCurrentView('shop')}
+                        onContinueShopping={() => dispatch(setCurrentView('shop'))}
                     />
                 );
             default:
@@ -205,10 +205,9 @@ const Layout: React.FC = () => {
         <>
             <div className="min-h-screen flex flex-col">
                 <Navbar
-                    currentView={currentView}
-                    setView={setCurrentView}
                     cartCount={cart.reduce((sum, item) => sum + item.quantity, 0)}
                     onSearch={onSearch}
+                    searchValue={searchValue}
                 />
                 <main className="grow pt-16">
                     {renderView()}

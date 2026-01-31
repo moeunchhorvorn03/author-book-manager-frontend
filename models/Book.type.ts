@@ -5,6 +5,10 @@ export interface BookRequestBody {
     searchValue: string;
 }
 
+export interface BookDetailRequestBody {
+    id: number;
+}
+
 export interface Book {
     id: string;
     title: string;
@@ -12,7 +16,7 @@ export interface Book {
     price: number;
     rating: number;
     description: string;
-    category: Category;
+    category: Category | "";
     coverImage: string;
     isBestseller: boolean;
     review: number;

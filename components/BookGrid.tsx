@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import BookCard from './BookCard';
-import { Book, Category } from '../types';
+import { Category } from '../types';
+import { Book } from '@/models/Book.type';
 
 interface BookGridProps {
     onBookClick: (book: Book) => void;
