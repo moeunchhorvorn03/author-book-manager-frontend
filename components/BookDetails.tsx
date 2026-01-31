@@ -6,12 +6,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import { setCurrentView } from '@/store/slices/viewSlice';
-import { useAppDispatch } from '@/store/hook';
+import { useAppDispatch, useAppSelector } from '@/store/hook';
 
 const BookDetails = () => {
     const navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
     const dispatch = useAppDispatch();
+    const previousView = useAppSelector(state => state.view.previousView);
     const [book, setBook] = useState<Book>({
         id: "",
         title: "",
@@ -50,6 +51,12 @@ const BookDetails = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    const handleBack = () => {
+        dispatch(setCurrentView(previousView));
+        navigate(-1);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
     return (
         <>
             <div className="min-h-screen flex flex-col">
@@ -60,7 +67,7 @@ const BookDetails = () => {
                     />
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                         <button
-                            onClick={() => navigate(-1)}
+                            onClick={handleBack}
                             className="flex items-center text-sm font-medium text-gray-500 hover:text-amber-600 mb-8 transition-colors"
                         >
                             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

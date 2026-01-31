@@ -4,10 +4,12 @@ export type View = 'home' | 'shop' | 'cart';
 
 type ViewState = {
     currentView: View | null
+    previousView: View | null
 }
 
 const initialState: ViewState = {
     currentView: "home",
+    previousView: null,
 }
 
 const viewSlice = createSlice({
@@ -15,7 +17,8 @@ const viewSlice = createSlice({
     initialState,
     reducers: {
         setCurrentView(state, action: PayloadAction<View | null>) {
-            state.currentView = action.payload
+            state.previousView = state.currentView;
+            state.currentView = action.payload;
         },
     },
 })
