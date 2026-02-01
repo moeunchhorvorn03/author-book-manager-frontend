@@ -17,6 +17,6 @@ class StorageService {
     }
 }
 
-type Key = "warmed_at" | "isPromotion";
+type Key = "warmed_at" | "isPromotion" | "token";
 
 export const storage = StorageService.getInstance();

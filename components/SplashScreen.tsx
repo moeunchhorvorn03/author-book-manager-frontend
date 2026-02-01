@@ -11,6 +11,7 @@ const SplashScreen: React.FC = () => {
     const [isLoading, setIsLoading] = useState(true);
     const warmedAt = storage.getLocalItem("warmed_at");
     const isStillWarm = !!warmedAt && Date.now() - Number(warmedAt) < WARM_TTL;
+    const isAuthenthicated = storage.getLocalItem("token");
 
     useEffect(() => {
         getBooks();
@@ -22,23 +23,45 @@ const SplashScreen: React.FC = () => {
             searchValue: ""
         };
 
-        if (isStillWarm) {
+        if (isStillWarm && !isAuthenthicated) {
+            navigate("/login", { replace: true });
+            storage.setLocalItem("isPromotion", "N");
+            return;
+        }
+
+        if (isStillWarm && isAuthenthicated) {
             navigate("/home", { replace: true });
             storage.setLocalItem("isPromotion", "N");
             return;
         }
 
-        request.get('books/filter', body)
-            .then(() => {
-                navigate("/home", { replace: true });
-                storage.setLocalItem("isPromotion", "Y");
-            }).catch((error) => {
-                console.error('Error fetching health:', error);
-            })
-            .finally(() => {
-                setIsLoading(false);
-                storage.setLocalItem("warmed_at", Date.now().toString());
-            });
+        if (!isStillWarm && isAuthenthicated) {
+            request.get('books/filter', body)
+                .then(() => {
+                    navigate("/home", { replace: true });
+                    storage.setLocalItem("isPromotion", "Y");
+                }).catch((error) => {
+                    console.error('Error fetching health:', error);
+                })
+                .finally(() => {
+                    setIsLoading(false);
+                    storage.setLocalItem("warmed_at", Date.now().toString());
+                });
+        }
+
+        if (!isStillWarm && !isAuthenthicated) {
+            request.get('books/filter', body)
+                .then(() => {
+                    navigate("/login", { replace: true });
+                    storage.setLocalItem("isPromotion", "Y");
+                }).catch((error) => {
+                    console.error('Error fetching health:', error);
+                })
+                .finally(() => {
+                    setIsLoading(false);
+                    storage.setLocalItem("warmed_at", Date.now().toString());
+                });
+        }
     };
 
     return (
