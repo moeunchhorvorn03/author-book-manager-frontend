@@ -219,35 +219,110 @@ const Layout: React.FC = () => {
             {
                 showPopup && <div
                     className={`fixed inset-0 flex items-center justify-center bg-black/60 z-50 backdrop-blur-sm transition-opacity duration-600 ${isOpen ? "opacity-100" : "opacity-0"}`}
+                    onClick={handleClosePopup}
                 >
                     <div
-                        className={`bg-white rounded-sm shadow-2xl flex items-center justify-center max-w-xl h-80 w-full overflow-hidden relative transition-all duration-600 ${isOpen ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+                        className={`bg-white rounded-2xl shadow-2xl max-w-lg w-full mx-4 overflow-hidden relative transition-all duration-600 ${isOpen ? "translate-y-0 opacity-100 scale-100" : "translate-y-8 opacity-0 scale-95"
                             }`}
+                        onClick={(e) => e.stopPropagation()}
                     >
+                        {/* Close Button */}
                         <button
                             onClick={handleClosePopup}
-                            className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors z-10"
+                            className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors z-10 bg-white/80 backdrop-blur-sm rounded-full p-1.5 hover:bg-white"
                             aria-label="Close"
                         >
-                            <svg className="w-6 h-6" fill="none" stroke="gray" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </button>
 
-                        <div className="p-8 text-center">
-                            <h2 className="text-3xl font-bold text-amber-600 mb-3">
+                        {/* Image Header Section */}
+                        <div className="relative h-56 bg-gradient-to-br from-amber-400 via-orange-400 to-amber-500 overflow-hidden">
+                            <img
+                                src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                                alt="Beautiful bookshelf"
+                                className="w-full h-full object-cover opacity-90"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent"></div>
+                            
+                            {/* Discount Badge */}
+                            <div className="absolute top-6 left-6 bg-red-500 text-white px-5 py-2.5 rounded-full font-bold text-xl shadow-xl animate-pulse flex items-center gap-2">
+                                <span className="text-2xl">🎉</span>
+                                <span>10% OFF</span>
+                            </div>
+
+                            {/* Decorative Elements */}
+                            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
+                                <div className="w-2 h-2 bg-white/60 rounded-full animate-ping" style={{ animationDelay: '0s' }}></div>
+                                <div className="w-2 h-2 bg-white/60 rounded-full animate-ping" style={{ animationDelay: '0.2s' }}></div>
+                                <div className="w-2 h-2 bg-white/60 rounded-full animate-ping" style={{ animationDelay: '0.4s' }}></div>
+                            </div>
+                        </div>
+
+                        {/* Content Section */}
+                        <div className="p-8 text-center bg-gradient-to-b from-white to-amber-50/30">
+                            <h2 className="text-3xl font-serif font-bold text-gray-900 mb-2">
                                 Join Our Community
                             </h2>
                             <p className="text-lg text-gray-600 mb-6">
-                                <span className="font-bold text-amber-600">Get 10% off your first purchase!</span>
+                                Get <span className="font-bold text-amber-600 text-xl">10% off</span> your first purchase!
                             </p>
 
-                            <button
-                                onClick={handleJoinCommunity}
-                                className="flex-1 px-10 py-3 bg-amber-600 text-white font-semibold animate-bounce rounded-sm hover:bg-amber-700 transition-all transform hover:scale-105 shadow-lg"
-                            >
-                                Join Now
-                            </button>
+                            {/* Decorative Book Icons */}
+                            <div className="flex justify-center items-center gap-3 mb-6">
+                                <div className="relative group">
+                                    <img
+                                        src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80"
+                                        alt="Book"
+                                        className="w-14 h-14 rounded-md object-cover shadow-lg transform group-hover:scale-110 transition-transform"
+                                    />
+                                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-amber-500 rounded-full border-2 border-white"></div>
+                                </div>
+                                <div className="relative group">
+                                    <img
+                                        src="https://images.unsplash.com/photo-1512820790803-83ca734da794?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80"
+                                        alt="Book"
+                                        className="w-14 h-14 rounded-md object-cover shadow-lg transform group-hover:scale-110 transition-transform"
+                                    />
+                                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-orange-500 rounded-full border-2 border-white"></div>
+                                </div>
+                                <div className="relative group">
+                                    <img
+                                        src="https://images.unsplash.com/photo-1543002588-bfa74002ed7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80"
+                                        alt="Book"
+                                        className="w-14 h-14 rounded-md object-cover shadow-lg transform group-hover:scale-110 transition-transform"
+                                    />
+                                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-amber-600 rounded-full border-2 border-white"></div>
+                                </div>
+                            </div>
+
+                            {/* Action Buttons */}
+                            <div className="flex flex-col sm:flex-row gap-3">
+                                <button
+                                    onClick={handleJoinCommunity}
+                                    className="flex-1 px-8 py-3.5 bg-gradient-to-r from-amber-600 to-orange-500 text-white font-semibold rounded-lg hover:from-amber-700 hover:to-orange-600 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+                                >
+                                    <span>Join Now</span>
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                                    </svg>
+                                </button>
+                                <button
+                                    onClick={handleClosePopup}
+                                    className="flex-1 px-8 py-3.5 border-2 border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-all"
+                                >
+                                    Maybe Later
+                                </button>
+                            </div>
+
+                            {/* Trust Badge */}
+                            <p className="mt-4 text-xs text-gray-500 flex items-center justify-center gap-1">
+                                <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                </svg>
+                                <span>No credit card required</span>
+                            </p>
                         </div>
                     </div>
                 </div>
